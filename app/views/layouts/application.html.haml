@@ -1,0 +1,30 @@
+!!! 5
+%html
+  %head
+    %title Card Wall
+    = include_stylesheets :screen, :media => 'all'
+    = csrf_meta_tag
+  %body
+    %header
+      .title
+        %h1= link_to 'Card Wall', root_url
+
+      .flash
+        - if flash.notice
+          .notice
+            %p= notice
+        - if flash.alert
+          .alert
+            %p= alert
+
+    %article
+      = yield
+
+    %footer
+      %p
+        a web app by #{link_to 'gregory mcintyre', 'http://gregorymcintyre.com'} with <tt>&lt;3</tt>
+      %p
+        please #{link_to 'report', 'https://github.com/puyo/cardwall/issues/new'} any problems
+
+    = include_javascripts :screen
+    = yield :javascript
