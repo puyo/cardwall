@@ -1,19 +1,13 @@
-class User
-  def initialize(opts = nil)
-    @opts = opts
-  end
+require 'ostruct'
 
-  def timezone
-    opts[:timezone] || 'Sydney'
+class User
+  delegate :email_address, to: '@opts'
+
+  def initialize(opts = nil)
+    @opts = OpenStruct.new(opts || {})
   end
 
   def persisted?
     false
-  end
-
-  private
-
-  def opts
-    @opts || {}
   end
 end

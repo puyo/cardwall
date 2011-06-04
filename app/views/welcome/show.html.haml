@@ -1,2 +1,51 @@
-%section.welcome
-  %h2 Welcome!
+%section.wall
+  .buttons
+    //%button.button.mode_button{value: 'view'} View
+    //%button.button.mode_button{value: 'move'} Move
+    //%button.button.mode_button{value: 'edit'} Edit
+    %button.button.save_button{:disabled => true} Save
+
+  #mode.view
+    #wall
+      - @wall.cards.each do |card|
+        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "background-color: #{card.bg_color}; top: #{card.y}px; left: #{card.x}px; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}") do
+          =h card.content
+
+- content_for :javascript do
+  :javascript
+    $(function() {
+      function cards() {
+        return $("#wall").find('.card');
+      }
+
+      function setMode(mode) {
+        $('#mode').attr('class', mode);
+      }
+
+      function setModified() {
+        $('.save_button').removeAttr('disabled');
+      }
+
+      cards().draggable({
+        containment: "#wall",
+        disabled: false,
+        stop: function(event, ui) { setModified(); }
+      }).each(function(){
+        $(this).fancybox({
+          type: 'ajax',
+          ajax: {
+            url: '/walls/' + $(this).attr('data-wall-id') + '/cards/' + $(this).attr('data-card-id') + '/edit'
+          }
+        });
+      });
+
+      // mode switching
+      $('.mode_button').click(function(){
+        setMode($(this).attr('value'));
+      });
+
+      $('#wall').find('.card').click(function(){
+        //alert('click');
+        //$(this).html('<input type="textarea">');
+      });
+    });
