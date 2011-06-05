@@ -34,6 +34,9 @@
           type: 'ajax',
           ajax: {
             url: '/walls/' + $(this).attr('data-wall-id') + '/cards/' + $(this).attr('data-card-id') + '/edit'
+          },
+          onComplete: function() {
+            $('#fancybox-content').find('input:visible:first').focus();
           }
         });
       });
