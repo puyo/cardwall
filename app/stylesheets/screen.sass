@@ -56,28 +56,6 @@ $highlight-bg: #f28c8c
 
 // ------------------------------------------------------------
 .wall
-  #mode.view
-    #wall
-      background-color: #eee
-
-  #mode.edit
-    #wall
-      background-color: #ee8
-    .card
-      cursor: pointer
-      border: 2px solid yellow
-      padding: 3px
-      +border-radius(5px)
-
-  #mode.move
-    #wall
-      background-color: #8ee
-    .card
-      cursor: move
-      border: 2px solid blue
-      padding: 3px
-      +border-radius(5px)
-
   #wall
     position: relative
     height: 400px
@@ -90,6 +68,8 @@ $highlight-bg: #f28c8c
       font-family: monospace
       cursor: pointer
       +box-shadow
+      white-space: pre-line
+      overflow: hidden
 
   .buttons
     text-align: right
