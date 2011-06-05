@@ -1,7 +1,7 @@
 %section.wall
   - form_for @wall do |form|
     .buttons
-      = form.submit 'Save Card Positions', class: 'save_button', disabled: true
+      = form.submit 'Save Card Positions', disabled: true
 
     #mode.view
       #wall
@@ -15,19 +15,11 @@
 - content_for :javascript do
   :javascript
     $(function() {
-      function cards() {
-        return $("#wall").find('.card');
-      }
-
-      function setMode(mode) {
-        $('#mode').attr('class', mode);
-      }
-
       function setModified() {
-        $('.save_button').removeAttr('disabled');
+        $('#wall_submit').removeAttr('disabled');
       }
 
-      cards().draggable({
+      $("#wall").find('.card').draggable({
         containment: "#wall",
         disabled: false,
         stop: function(event, ui) {
@@ -44,15 +36,5 @@
             url: '/walls/' + $(this).attr('data-wall-id') + '/cards/' + $(this).attr('data-card-id') + '/edit'
           }
         });
-      });
-
-      // mode switching
-      $('.mode_button').click(function(){
-        setMode($(this).attr('value'));
-      });
-
-      $('#wall').find('.card').click(function(){
-        //alert('click');
-        //$(this).html('<input type="textarea">');
       });
     });
