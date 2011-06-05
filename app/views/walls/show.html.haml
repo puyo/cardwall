@@ -1,43 +1,68 @@
 %section.wall
   - form_for @wall do |form|
     .buttons
-      = form.submit 'Save Card Positions', disabled: true
+      = form.submit
 
-    #mode.view
-      #wall
-        - @wall.cards.each do |card|
-          = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, 'data-dom-id' => dom_id(card), style: "background-color: #{card.bg_color}; top: #{card.y}px; left: #{card.x}px; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}") do
-            =h card.content
-            = form.fields_for :cards, card do |fields|
-              = fields.hidden_field :x, id: dom_id(card, 'x')
-              = fields.hidden_field :y, id: dom_id(card, 'y')
+    #wall
+      - @wall.cards.each do |card|
+        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;") do
+          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}"}<
+            :preserve
+              #{h(card.content)}
+          .edit_card_form{id: dom_id(card, 'edit')}
+            = render 'cards/form', wall: @wall, card: card, form: form
 
 - content_for :javascript do
   :javascript
     $(function() {
-      function setModified() {
-        $('#wall_submit').removeAttr('disabled');
-      }
+      var cards = $("#wall").find('.card');
+      var dragging = false;
+      
+      cards.find('.content').click(function() {
+        if (dragging === false) {
+          var card = $(this).closest('.card');
+          var editable = card.hasClass('editable');
+          cards.removeClass('editable');
+          if (!editable) {
+            card.addClass('editable');
+            card.find('input:visible, textarea:visible').first().focus();
+          }
+        } else {
+          dragging = false;
+        }
+      });
 
-      $("#wall").find('.card').draggable({
+      $('#wall').find('input').change(function(){
+        var card = $(this).closest('.card');
+        console.log(card);
+        card.addClass('changed');
+      });
+
+      cards.draggable({
         containment: "#wall",
         disabled: false,
+        stack: '.card',
+        start: function() { dragging = true; },
         stop: function(event, ui) {
-          var dom_id = $(this).attr('data-dom-id');
           var pos = $(this).position();
-          $('#x_' + dom_id).val(pos.left);
-          $('#y_' + dom_id).val(pos.top);
-          setModified();
+          $(this).find('.x').val(pos.left);
+          $(this).find('.y').val(pos.top);
+          $(this).addClass('changed');
         }
-      }).each(function(){
-        $(this).fancybox({
-          type: 'ajax',
-          ajax: {
-            url: '/walls/' + $(this).attr('data-wall-id') + '/cards/' + $(this).attr('data-card-id') + '/edit'
-          },
-          onComplete: function() {
-            $('#fancybox-content').find('input:visible:first').focus();
-          }
-        });
+      });
+
+      cards.find('.content_edit').bind('keydown keyup keypress', function(){
+        var card = $(this).closest('.card');
+        card.find('.content').html($(this).val());
+        card.addClass('changed');
+      });
+      cards.find('.bg_color_edit').bind('keydown keyup keypress', function(){
+        $(this).closest('.card').find('.content').css('background-color', $(this).val());
+      });
+
+      $(document).bind('keydown.fb', function(e) {
+        if (e.keyCode == 27) {
+          $('.card').removeClass('editable');
+        }
       });
     });
