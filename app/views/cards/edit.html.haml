@@ -1,2 +1,18 @@
-hi
-= @card.id
+- form_for [@wall, @card] do |f|
+  .field.w
+    = f.label :w
+    = f.text_field :w
+  .field.h
+    = f.label :h
+    = f.text_field :h
+  .field.bg_color
+    = f.label :bg_color
+    = f.text_field :bg_color
+  .field.author
+    = f.label :author
+    = f.text_field :author
+  .field.content
+    = f.label :content
+    = f.text_area :content, :style => "width: #{@card.w}px; height: #{@card.h}px"
+  .field.submit
+    = f.submit

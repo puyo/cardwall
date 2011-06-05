@@ -30,7 +30,31 @@ p
   margin: 0.5em 0
 
 // ------------------------------------------------------------
+// color
 
+$default-fg: #444
+$heading-fg: blue
+$link-fg: $default-fg
+$link-hover-fg: $heading-fg
+$table-heading-fg: $default-fg
+$table-heading-bg: #c4bcbc
+$table-light-bg: #f4eeee
+$table-dark-bg: #e4dddd
+$highlight-fg: black
+$highlight-bg: #f28c8c
+
+=notice-color
+  background-color: $table-heading-bg
+
+=alert-color
+  color: $highlight-fg
+  background-color: $highlight-bg
+
+=table-heading-color
+  color: $table-heading-fg
+  background-color: $table-heading-bg
+
+// ------------------------------------------------------------
 .wall
   #mode.view
     #wall
@@ -72,3 +96,32 @@ p
     button
       width: 100px
       height: 50px
+
+// ------------------------------------------------------------
+.edit_card
+  .field
+    display: table-row
+    label, input
+      display: table-cell
+      vertical-align: top
+  textarea
+    font-family: monospace
+    padding: 5px
+
+// ------------------------------------------------------------
+.flash
+  p
+    margin: 0
+    padding: 5px 1em
+
+  .notice, .alert
+    text-align: center
+    font-size: 11px
+    font-weight: bold
+    +border-radius(5px)
+
+  .notice
+    +notice-color
+
+  .alert
+    +alert-color

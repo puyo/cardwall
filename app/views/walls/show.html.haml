@@ -1,15 +1,16 @@
 %section.wall
-  .buttons
-    //%button.button.mode_button{value: 'view'} View
-    //%button.button.mode_button{value: 'move'} Move
-    //%button.button.mode_button{value: 'edit'} Edit
-    %button.button.save_button{:disabled => true} Save
+  - form_for @wall do |form|
+    .buttons
+      = form.submit 'Save Card Positions', class: 'save_button', disabled: true
 
-  #mode.view
-    #wall
-      - @wall.cards.each do |card|
-        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "background-color: #{card.bg_color}; top: #{card.y}px; left: #{card.x}px; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}") do
-          =h card.content
+    #mode.view
+      #wall
+        - @wall.cards.each do |card|
+          = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, 'data-dom-id' => dom_id(card), style: "background-color: #{card.bg_color}; top: #{card.y}px; left: #{card.x}px; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}") do
+            =h card.content
+            = form.fields_for :cards, card do |fields|
+              = fields.hidden_field :x, id: dom_id(card, 'x')
+              = fields.hidden_field :y, id: dom_id(card, 'y')
 
 - content_for :javascript do
   :javascript
@@ -29,7 +30,13 @@
       cards().draggable({
         containment: "#wall",
         disabled: false,
-        stop: function(event, ui) { setModified(); }
+        stop: function(event, ui) {
+          var dom_id = $(this).attr('data-dom-id');
+          var pos = $(this).position();
+          $('#x_' + dom_id).val(pos.left);
+          $('#y_' + dom_id).val(pos.top);
+          setModified();
+        }
       }).each(function(){
         $(this).fancybox({
           type: 'ajax',
