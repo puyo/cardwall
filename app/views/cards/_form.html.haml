@@ -1,21 +1,18 @@
 = form.fields_for :cards, card do |f|
   .field.hidden
-    = f.text_field :x, class: 'x'
+    = f.text_field :x, class: 'x_input'
   .field.hidden
-    = f.text_field :y, class: 'y'
-  -#
-    .field.w
-      = f.label :w
-      = f.text_field :w
-    .field.h
-      = f.label :h
-      = f.text_field :h
-  .field
-    = f.label :content
-    = f.text_area :content, style: "width: #{card.w}px; height: #{card.h}px", class: 'content_edit'
+    = f.text_field :y, class: 'y_input'
+  .field.hidden
+    = f.text_field :w, class: 'w_input'
+  .field.hidden
+    = f.text_field :h, class: 'h_input'
+  .field.text
+    = f.label :text
+    = f.text_area :text, style: "width: #{card.w}px; height: #{card.h}px", class: 'text_input'
   .field.author
     = f.label :author
     = f.text_field :author
   .field.bg_color
     = f.label :bg_color, 'Background'
-    = f.text_field :bg_color, class: 'bg_color_edit'
+    = f.text_field :bg_color, class: 'bg_color_input'

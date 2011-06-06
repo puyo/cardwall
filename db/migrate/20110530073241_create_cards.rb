@@ -7,7 +7,7 @@ class CreateCards < ActiveRecord::Migration
       t.integer :z
       t.integer :w, null: false
       t.integer :h, null: false
-      t.string :content
+      t.string :text
       t.string :bg_image
       t.string :bg_color
       t.string :author

@@ -67,13 +67,14 @@ $highlight-bg: #f28c8c
       +box-shadow
       &.changed
         outline: 5px solid red
-      &.editable
-        outline: 5px solid blue
+      &.selected
         .edit_card_form
           display: block
       .content
-        cursor: pointer
-      .content, .content_edit
+        .text
+          cursor: pointer
+      .content .text,
+      .edit_card_form .text_edit
         white-space: pre
         overflow: hidden
         font-family: monospace
@@ -88,8 +89,6 @@ $highlight-bg: #f28c8c
         background-color: #444
         padding: 5px
         position: absolute
-        left: 100px
-        top: 70px
         .field
           display: table-row
           label, input

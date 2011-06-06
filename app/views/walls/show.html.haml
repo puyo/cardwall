@@ -6,9 +6,10 @@
     #wall
       - @wall.cards.each do |card|
         = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;") do
-          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}"}<
-            :preserve
-              #{h(card.content)}
+          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}"}
+            .text<
+              :preserve
+                #{h(card.text)}
           .edit_card_form{id: dom_id(card, 'edit')}
             = render 'cards/form', wall: @wall, card: card, form: form
 
@@ -21,10 +22,10 @@
       cards.find('.content').click(function() {
         if (dragging === false) {
           var card = $(this).closest('.card');
-          var editable = card.hasClass('editable');
-          cards.removeClass('editable');
-          if (!editable) {
-            card.addClass('editable');
+          var selected = card.hasClass('selected');
+          cards.removeClass('selected');
+          if (!selected) {
+            card.addClass('selected');
             card.find('input:visible, textarea:visible').first().focus();
           }
         } else {
@@ -51,18 +52,18 @@
         }
       });
 
-      cards.find('.content_edit').bind('keydown keyup keypress', function(){
+      cards.find('.text_input').bind('keydown keyup keypress', function(){
         var card = $(this).closest('.card');
-        card.find('.content').html($(this).val());
+        card.find('.content .text').html($(this).val());
         card.addClass('changed');
       });
-      cards.find('.bg_color_edit').bind('keydown keyup keypress', function(){
+      cards.find('.bg_color_input').bind('keydown keyup keypress', function(){
         $(this).closest('.card').find('.content').css('background-color', $(this).val());
       });
 
       $(document).bind('keydown.fb', function(e) {
         if (e.keyCode == 27) {
-          $('.card').removeClass('editable');
+          $('.card').removeClass('selected');
         }
       });
     });
