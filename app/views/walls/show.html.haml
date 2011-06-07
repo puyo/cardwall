@@ -58,10 +58,10 @@
       cards.find('.text_input').bind('keydown keyup keypress', function(){
         var card = $(this).closest('.card');
         var text = card.find('.content .text');
-        if ($(this).val() !== text.html()) {
+        if ($(this).val() !== text.text()) {
           $(this).trigger('change');
         }
-        card.find('.content .text').html($(this).val());
+        card.find('.content .text').text($(this).val());
       });
 
       cards.find('.shadow_input').change(function(){
