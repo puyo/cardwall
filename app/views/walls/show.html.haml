@@ -1,12 +1,12 @@
 %section.wall
   = form_for @wall do |form|
     .buttons
-      = form.submit
+      = form.submit 'Save', :disabled => true
 
     #wall
       - @wall.cards.each do |card|
-        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;", class: card.shadow? ? 'shadow' : nil) do
-          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}"}
+        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;; z-index: #{card.z}", class: card.shadow? ? 'shadow' : nil) do
+          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px"}
             .text<
               :preserve
                 #{h(card.text)}
@@ -33,9 +33,9 @@
         }
       });
 
-      $('#wall').find('input').change(function(){
-        var card = $(this).closest('.card');
-        card.addClass('changed');
+      cards.change(function(){
+        $(this).addClass('changed');
+        $('#wall_submit').addClass('changed').attr('disabled', false);
       });
 
       cards.draggable({
@@ -47,14 +47,21 @@
           var pos = $(this).position();
           $(this).find('.x_input').val(pos.left);
           $(this).find('.y_input').val(pos.top);
-          $(this).addClass('changed');
+          console.log($(this).css('z-index'));
+          cards.each(function(){
+            $(this).find('.z_input').val($(this).css('z-index'));
+          });
+          $(this).trigger('change');
         }
       });
 
       cards.find('.text_input').bind('keydown keyup keypress', function(){
         var card = $(this).closest('.card');
+        var text = card.find('.content .text');
+        if ($(this).val() !== text.html()) {
+          $(this).trigger('change');
+        }
         card.find('.content .text').html($(this).val());
-        card.addClass('changed');
       });
 
       cards.find('.shadow_input').change(function(){
@@ -68,6 +75,7 @@
 
       cards.find('.bg_color_input').bind('keydown keyup keypress', function(){
         $(this).closest('.card').find('.content').css('background-color', $(this).val());
+        $(this).trigger('change');
       });
 
       $(document).bind('keydown.fb', function(e) {

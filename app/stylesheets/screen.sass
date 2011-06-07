@@ -55,54 +55,56 @@ $highlight-bg: #f28c8c
   background-color: $table-heading-bg
 
 // ------------------------------------------------------------
-.wall
-  #wall
-    position: relative
-    height: 400px
-    border: 1px solid gray
 
-    .card
-      display: block
-      position: absolute
-      &.shadow
-        +box-shadow
-      &.changed
-        +box-shadow('yellow', 0, 0, 10px)
-      &.selected
-        .edit_card_form
-          display: block
-      .content
-        cursor: pointer
-      .content .text,
-      .edit_card_form .text_edit
-        white-space: pre
-        overflow: hidden
-        font-family: monospace
-        padding: 5px
-        font-size: 13px
+#wall
+  position: relative
+  height: 400px
+  border: 1px solid gray
+  background-color: #eee
+
+  .card
+    display: block
+    position: absolute
+    &.shadow
+      +box-shadow(1px 1px 5px #444)
+    &.selected
       .edit_card_form
-        display: none
-        z-index: 1000
-        +box-shadow
-        +border-radius
-        color: white
-        background-color: #444
-        padding: 5px
-        position: absolute
-        .field
-          display: table-row
-          label, input
-            display: table-cell
-            vertical-align: top
-          label
-            padding: 5px 0.5em
-          &.hidden
-            display: none
+        display: block
+    .content
+      cursor: pointer
+    .content .text,
+    .edit_card_form .text_edit
+      white-space: pre
+      overflow: hidden
+      font-family: monospace
+      padding: 5px
+      font-size: 13px
+    .edit_card_form
+      display: none
+      z-index: 1000
+      +box-shadow
+      +border-radius
+      color: white
+      background-color: #444
+      padding: 5px
+      position: absolute
+      .field
+        display: table-row
+        label, input
+          display: table-cell
+          vertical-align: top
+        label
+          padding: 5px 0.5em
+        &.x, &.y, &.z, &.w, &.h
+          display: none
 
-
+.wall
   .buttons
     input
       width: 200px
+      background-color: #eee
+      &.changed
+        background-color: yellow
 
 // ------------------------------------------------------------
 .edit_card
