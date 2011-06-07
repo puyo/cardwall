@@ -64,15 +64,15 @@ $highlight-bg: #f28c8c
     .card
       display: block
       position: absolute
-      +box-shadow
+      &.shadow
+        +box-shadow
       &.changed
-        outline: 5px solid red
+        +box-shadow('yellow', 0, 0, 10px)
       &.selected
         .edit_card_form
           display: block
       .content
-        .text
-          cursor: pointer
+        cursor: pointer
       .content .text,
       .edit_card_form .text_edit
         white-space: pre

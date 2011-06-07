@@ -5,7 +5,7 @@
 
     #wall
       - @wall.cards.each do |card|
-        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;") do
+        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;", class: card.shadow? ? 'shadow' : nil) do
           .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px; z-index: #{card.z}"}
             .text<
               :preserve
@@ -35,7 +35,6 @@
 
       $('#wall').find('input').change(function(){
         var card = $(this).closest('.card');
-        console.log(card);
         card.addClass('changed');
       });
 
@@ -46,8 +45,8 @@
         start: function() { dragging = true; },
         stop: function(event, ui) {
           var pos = $(this).position();
-          $(this).find('.x').val(pos.left);
-          $(this).find('.y').val(pos.top);
+          $(this).find('.x_input').val(pos.left);
+          $(this).find('.y_input').val(pos.top);
           $(this).addClass('changed');
         }
       });
@@ -57,6 +56,16 @@
         card.find('.content .text').html($(this).val());
         card.addClass('changed');
       });
+
+      cards.find('.shadow_input').change(function(){
+        var card = $(this).closest('.card');
+        if ($(this).attr('checked')) {
+          card.addClass('shadow');
+        } else {
+          card.removeClass('shadow');
+        }
+      });
+
       cards.find('.bg_color_input').bind('keydown keyup keypress', function(){
         $(this).closest('.card').find('.content').css('background-color', $(this).val());
       });

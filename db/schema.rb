@@ -10,21 +10,22 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110530074312) do
+ActiveRecord::Schema.define(:version => 20110607074104) do
 
   create_table "cards", :force => true do |t|
-    t.integer  "wall_id",    :null => false
+    t.integer  "wall_id",                       :null => false
     t.integer  "x"
     t.integer  "y"
     t.integer  "z"
-    t.integer  "w",          :null => false
-    t.integer  "h",          :null => false
+    t.integer  "w",                             :null => false
+    t.integer  "h",                             :null => false
     t.string   "text"
     t.string   "bg_image"
     t.string   "bg_color"
     t.string   "author"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.boolean  "shadow",     :default => false, :null => false
   end
 
   add_index "cards", ["wall_id"], :name => "cards_wall_id_fk"
