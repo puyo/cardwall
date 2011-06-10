@@ -13,16 +13,33 @@
           .edit_card_form{id: dom_id(card, 'edit')}
             = render 'cards/form', wall: @wall, card: card, form: form
 
+      #multi_edit_card_form.edit_card_form
+        = render 'cards/form', wall: @wall, card: Card.new(w: 160, h: 100), form: form
+
 - content_for :javascript do
   :javascript
     $(function() {
       var cards = $("#wall").find('.card');
       var dragging = false;
+
+      function bringToTop(elem) {
+        // stolen from jquery.ui.draggable's stack functionality
+        var group = $.makeArray(cards).sort(function(a,b) {
+          return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
+        });
+        if (!group.length) { return; }
+        var min = parseInt(group[0].style.zIndex) || 0;
+        $(group).each(function(i) {
+          this.style.zIndex = min + i;
+        });
+        elem[0].style.zIndex = min + group.length;
+      }
       
       cards.find('.content').click(function() {
         if (dragging === false) {
           var card = $(this).closest('.card');
           var selected = card.hasClass('selected');
+          bringToTop(card);
           cards.removeClass('selected');
           if (!selected) {
             card.addClass('selected');
@@ -47,7 +64,6 @@
           var pos = $(this).position();
           $(this).find('.x_input').val(pos.left);
           $(this).find('.y_input').val(pos.top);
-          console.log($(this).css('z-index'));
           cards.each(function(){
             $(this).find('.z_input').val($(this).css('z-index'));
           });
@@ -63,6 +79,9 @@
         }
         card.find('.content .text').text($(this).val());
       });
+
+      cards.find('.w_input').change(function(){ $(this).closest('.card').find('.content').css('width', $(this).val() + 'px'); });
+      cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('height', $(this).val() + 'px'); });
 
       cards.find('.shadow_input').change(function(){
         var card = $(this).closest('.card');

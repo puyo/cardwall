@@ -1,13 +1,18 @@
 = form.fields_for :cards, card do |f|
   .field.x
+    = f.label :x
     = f.text_field :x, class: 'x_input'
   .field.y
+    = f.label :y
     = f.text_field :y, class: 'y_input'
   .field.z
+    = f.label :z
     = f.text_field :z, class: 'z_input'
   .field.w
+    = f.label :w
     = f.text_field :w, class: 'w_input'
   .field.h
+    = f.label :h
     = f.text_field :h, class: 'h_input'
   .field.text
     = f.label :text

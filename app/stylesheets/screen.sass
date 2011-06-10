@@ -72,32 +72,37 @@ $highlight-bg: #f28c8c
         display: block
     .content
       cursor: pointer
-    .content .text,
-    .edit_card_form .text_edit
-      white-space: pre
-      overflow: hidden
-      font-family: monospace
-      padding: 5px
-      font-size: 13px
-    .edit_card_form
-      display: none
-      z-index: 1000
-      +box-shadow
-      +border-radius
-      color: white
-      background-color: #444
-      padding: 5px
-      position: absolute
-      .field
-        display: table-row
-        label, input
-          display: table-cell
-        label
-          padding: 5px 0.5em
-          vertical-align: top
-          text-align: right
-        &.x, &.y, &.z, &.w, &.h
-          display: none
+  .content .text,
+  .edit_card_form .text_edit
+    white-space: pre-wrap
+    overflow: hidden
+    font-family: monospace
+    padding: 5px
+    font-size: 13px
+  .edit_card_form
+    display: none
+    z-index: 1000
+    +box-shadow
+    +border-radius
+    color: white
+    background-color: #444
+    padding: 5px
+    position: absolute
+    .field
+      display: table-row
+      label, input
+        display: table-cell
+      label
+        padding: 5px 0.5em
+        vertical-align: top
+        text-align: right
+      &.x, &.y, &.z
+        display: none
+
+  #multi_edit_card_form
+    position: absolute
+    bottom: 5px
+    right: 5px
 
 .wall
   .buttons
