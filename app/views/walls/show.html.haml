@@ -3,7 +3,7 @@
     .buttons
       = form.submit 'Save', disabled: true
     #wall
-      = render partial: 'cards/item', collection: @wall.cards.not_prototypes, as: :card, locals: { form: form }
+      = render partial: 'card', collection: @wall.cards.not_prototypes, as: :card, locals: { form: form }
 
 - content_for :javascript do
   :javascript
