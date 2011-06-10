@@ -1,3 +1,4 @@
 class Card < ActiveRecord::Base
-  belongs_to :wall
+  scope :prototypes, where(:prototype => true)
+  scope :not_prototypes, where(:prototype => false)
 end

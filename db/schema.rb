@@ -10,7 +10,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20110607074104) do
+ActiveRecord::Schema.define(:version => 20110610085117) do
 
   create_table "cards", :force => true do |t|
     t.integer  "wall_id",                       :null => false
@@ -26,6 +26,7 @@ ActiveRecord::Schema.define(:version => 20110607074104) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "shadow",     :default => false, :null => false
+    t.boolean  "prototype",  :default => false, :null => false
   end
 
   add_index "cards", ["wall_id"], :name => "cards_wall_id_fk"

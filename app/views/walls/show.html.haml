@@ -1,20 +1,9 @@
 %section.wall
   = form_for @wall do |form|
     .buttons
-      = form.submit 'Save', :disabled => true
-
+      = form.submit 'Save', disabled: true
     #wall
-      - @wall.cards.each do |card|
-        = div_for(card, 'data-wall-id' => @wall.id, 'data-card-id' => card.id, style: "top: #{card.y}px; left: #{card.x}px;; z-index: #{card.z}", class: card.shadow? ? 'shadow' : nil) do
-          .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px"}
-            .text<
-              :preserve
-                #{h(card.text)}
-          .edit_card_form{id: dom_id(card, 'edit')}
-            = render 'cards/form', wall: @wall, card: card, form: form
-
-      #multi_edit_card_form.edit_card_form
-        = render 'cards/form', wall: @wall, card: Card.new(w: 160, h: 100), form: form
+      = render partial: 'cards/item', collection: @wall.cards.not_prototypes, as: :card, locals: { form: form }
 
 - content_for :javascript do
   :javascript
