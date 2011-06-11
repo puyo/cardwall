@@ -19,19 +19,23 @@
       var cards = $("#wall").find('.card');
       var dragging = false;
 
-      function bringToTop(elem) {
+      function bringToTop(elem){
         // stolen from jquery.ui.draggable's stack functionality
-        var group = $.makeArray(cards).sort(function(a,b) {
+        var group = $.makeArray(cards).sort(function(a,b){
           return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
         });
         if (!group.length) { return; }
         var min = parseInt(group[0].style.zIndex) || 0;
-        $(group).each(function(i) {
+        $(group).each(function(i){
           this.style.zIndex = min + i;
         });
         elem[0].style.zIndex = min + group.length;
       }
-      
+
+      function setEditPosition(card){
+        card.find('.edit_card_form').css('left', card.find('.content').width() + 5);
+      }
+
       cards.find('.content').click(function() {
         if (dragging === false) {
           var card = $(this).closest('.card');
@@ -41,6 +45,7 @@
           if (!selected) {
             card.addClass('selected');
             card.find('input:visible, textarea:visible').first().focus();
+            setEditPosition(card);
           }
         } else {
           dragging = false;
@@ -77,7 +82,11 @@
         card.find('.content .text').text($(this).val());
       });
 
-      cards.find('.w_input').change(function(){ $(this).closest('.card').find('.content').css('width', $(this).val() + 'px'); });
+      cards.find('.w_input').change(function(){
+        var card = $(this).closest('.card');
+        card.find('.content').css('width', $(this).val());
+        setEditPosition(card);
+      });
       cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('min-height', $(this).val() + 'px'); });
 
       cards.find('.shadow_input').change(function(){
