@@ -81,11 +81,11 @@
       cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('min-height', $(this).val() + 'px'); });
 
       cards.find('.shadow_input').change(function(){
-        var card = $(this).closest('.card');
+        var content = $(this).closest('.card').find('.content');
         if ($(this).attr('checked')) {
-          card.addClass('shadow');
+          content.addClass('shadow');
         } else {
-          card.removeClass('shadow');
+          content.removeClass('shadow');
         }
       });
 
