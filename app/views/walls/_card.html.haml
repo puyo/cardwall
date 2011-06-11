@@ -1,5 +1,5 @@
 = div_for(card, style: card_style(card), class: card_classes(card)) do
-  .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; height: #{card.h}px"}
+  .content{style: "background-color: #{card.bg_color}; width: #{card.w}px; min-height: #{card.h}px"}
     .text<
       :preserve
         #{h(card.text)}
@@ -32,3 +32,5 @@
       .field.shadow
         = f.label :shadow
         = f.check_box :shadow, class: 'shadow_input'
+    .instructions
+      %p Esc = close

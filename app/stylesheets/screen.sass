@@ -10,11 +10,8 @@ $blueprint_grid_width: 20px
 $blueprint-grid-margin: 20px
 
 body
-  margin: 20px auto
-  width: 940px
-
-header, article, footer
-  margin: 0
+  padding: 0 0.5em
+  font-family: sans-serif
 
 ul, ol
   margin: 0.5em 0
@@ -32,35 +29,24 @@ p
 // ------------------------------------------------------------
 // color
 
-$default-fg: #444
-$heading-fg: blue
-$link-fg: $default-fg
-$link-hover-fg: $heading-fg
-$table-heading-fg: $default-fg
-$table-heading-bg: #c4bcbc
-$table-light-bg: #f4eeee
-$table-dark-bg: #e4dddd
-$highlight-fg: black
-$highlight-bg: #f28c8c
-
 =notice-color
-  background-color: $table-heading-bg
+  color: #021324
+  background-color: #ffed8b
 
 =alert-color
-  color: $highlight-fg
-  background-color: $highlight-bg
+  color: #021324
+  background-color: #ffed8b
 
-=table-heading-color
-  color: $table-heading-fg
-  background-color: $table-heading-bg
+body
+  background-color: #eeeeee
+  width: 2000px
 
 // ------------------------------------------------------------
 
 #wall
   position: relative
-  height: 400px
-  border: 1px solid gray
-  background-color: #eee
+  width: 100%
+  height: 800px
 
   .card
     display: block
@@ -80,14 +66,17 @@ $highlight-bg: #f28c8c
     padding: 5px
     font-size: 13px
   .edit_card_form
+    +opacity(0.8)
     display: none
     z-index: 1000
     +box-shadow
     +border-radius
-    color: white
-    background-color: #444
+    color: #444
+    background-color: white
     padding: 5px
     position: absolute
+    left: 10px
+    font-size: 10px
     .field
       display: table-row
       label, input
@@ -100,38 +89,47 @@ $highlight-bg: #f28c8c
         display: none
       .text_input
         width: 170px
+    .instructions
+      text-align: right
 
   #multi_edit_card_form
     position: absolute
     bottom: 5px
     right: 5px
 
-.wall
+.save_info
+  padding: 5px 0
+  height: 25px
+  +clearfix
   .buttons
+    float: left
+    width: 400px
+    margin-right: 20px
     input
-      width: 200px
+      width: 100%
       background-color: #eee
       &.changed
         background-color: yellow
+  .flash
+    float: left
+    width: 400px
+    p
+      margin: 0
+      line-height: 22px
+    .notice, .alert
+      margin: 2px 0
+      text-align: center
+      font-size: 11px
+      font-weight: bold
+      +border-radius(5px)
+    .notice
+      +notice-color
+    .alert
+      +alert-color
 
-// ------------------------------------------------------------
-.edit_card
+header
+  display: none
 
-// ------------------------------------------------------------
-.flash
-  min-height: 24px
-  p
-    margin: 0
-    padding: 5px 1em
-
-  .notice, .alert
-    text-align: center
-    font-size: 11px
-    font-weight: bold
-    +border-radius(5px)
-
-  .notice
-    +notice-color
-
-  .alert
-    +alert-color
+#wall
+  border: 1px dashed #888
+  border-width: 1px 0

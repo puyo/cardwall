@@ -2,20 +2,12 @@
 %html
   %head
     %title Card Wall
-    = include_stylesheets :screen, :media => 'all'
+    = include_stylesheets :screen, media: 'all'
     = csrf_meta_tag
   %body
     %header
       .title
         %h1= link_to 'Card Wall', root_url
-
-      .flash
-        - if flash.notice
-          .notice
-            %p= notice
-        - if flash.alert
-          .alert
-            %p= alert
 
     %article
       = yield

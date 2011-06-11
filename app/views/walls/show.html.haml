@@ -1,13 +1,21 @@
-%section.wall
-  = form_for @wall do |form|
+= form_for @wall do |form|
+  %section.save_info
     .buttons
-      = form.submit 'Save', disabled: true
+      = form.submit 'Save (Ctrl-S)', disabled: true
+    .flash
+      - if flash.notice
+        .notice
+          %p= notice
+      - if flash.alert
+        .alert
+          %p= alert
+  %section.wall
     #wall
       = render partial: 'card', collection: @wall.cards.not_prototypes, as: :card, locals: { form: form }
 
 - content_for :javascript do
   :javascript
-    $(function() {
+    $(function(){
       var cards = $("#wall").find('.card');
       var dragging = false;
 
@@ -70,7 +78,7 @@
       });
 
       cards.find('.w_input').change(function(){ $(this).closest('.card').find('.content').css('width', $(this).val() + 'px'); });
-      cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('height', $(this).val() + 'px'); });
+      cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('min-height', $(this).val() + 'px'); });
 
       cards.find('.shadow_input').change(function(){
         var card = $(this).closest('.card');
@@ -86,9 +94,17 @@
         $(this).trigger('change');
       });
 
-      $(document).bind('keydown.fb', function(e) {
-        if (e.keyCode == 27) {
+      $(document).keyup(function(event){
+        if (event.keyCode === 27) {
           $('.card').removeClass('selected');
         }
       });
+
+      $(document).keypress(function(event){
+        if (event.charCode === 19 && event.ctrlKey && $('#wall_submit').hasClass('changed')) {
+          $('##{dom_id(@wall, 'edit')}').submit();
+        }
+      });
+
+      $('.flash').find('.notice, .alert').delay(5000).fadeOut('slow');
     });
