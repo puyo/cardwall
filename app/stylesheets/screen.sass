@@ -11,7 +11,7 @@ $blueprint-grid-margin: 20px
 
 body
   padding: 0 0.5em
-  font-family: sans-serif
+  width: 2000px
 
 ul, ol
   margin: 0.5em 0
@@ -27,7 +27,17 @@ p
   margin: 0.5em 0
 
 // ------------------------------------------------------------
+// text
+
+body
+  font-family: sans-serif
+
+// ------------------------------------------------------------
 // color
+
+body
+  color: #444
+  background-color: #eeeeee
 
 =notice-color
   color: #021324
@@ -37,9 +47,28 @@ p
   color: #021324
   background-color: #ffed8b
 
-body
+=edit-card-color
+  +linear-gradient(color-stops(white, #ddd 33%))
+  +opacity(0.8)
+  +box-shadow
+  color: #444
+  background-color: white
+  input[type=text], textarea
+    +linear-gradient(color-stops(#ddd, white 5px))
+
+=save-button-changed-color
+  -webkit-animation-name: pulse
+  -webkit-animation-duration: 1s
+  -webkit-animation-iteration-count: infinite
+
+=save-button-color
   background-color: #eeeeee
-  width: 2000px
+
+@-webkit-keyframes pulse
+  to, from
+    background-color: #ffdd23
+  50%
+    background-color: #ffed8b
 
 // ------------------------------------------------------------
 
@@ -51,46 +80,43 @@ body
   .card
     display: block
     position: absolute
-    &.shadow
-      +box-shadow(1px 1px 5px #444)
     &.selected
+      .content
+        outline: 1px dashed #888
       .edit_card_form
         display: block
     .content
       cursor: pointer
-  .content .text,
-  .edit_card_form .text_edit
-    white-space: pre-wrap
-    overflow: hidden
-    font-family: monospace
-    padding: 5px
-    font-size: 13px
-  .edit_card_form
-    +opacity(0.8)
-    display: none
-    z-index: 1000
-    +box-shadow
-    +border-radius
-    color: #444
-    background-color: white
-    padding: 5px
-    position: absolute
-    left: 10px
-    font-size: 10px
-    .field
-      display: table-row
-      label, input
-        display: table-cell
-      label
-        padding: 5px 0.5em
-        vertical-align: top
+      float: left
+      .text
+        padding: 5px
+        white-space: pre-wrap
+        font-family: monospace
+        font-size: 13px
+      &.shadow
+        +box-shadow(1px 1px 5px #444)
+    .edit_card_form
+      +edit-card-color
+      +border-radius
+      display: none
+      float: left
+      padding: 5px
+      font-size: 10px
+      position: relative
+      .field
+        display: table-row
+        label, input
+          display: table-cell
+        label
+          padding: 5px 0.5em
+          vertical-align: top
+          text-align: right
+        &.x, &.y, &.z
+          display: none
+        .text_input
+          width: 170px
+      .instructions
         text-align: right
-      &.x, &.y, &.z
-        display: none
-      .text_input
-        width: 170px
-    .instructions
-      text-align: right
 
   #multi_edit_card_form
     position: absolute
@@ -106,10 +132,10 @@ body
     width: 400px
     margin-right: 20px
     input
+      +save-button-color
       width: 100%
-      background-color: #eee
       &.changed
-        background-color: yellow
+        +save-button-changed-color
   .flash
     float: left
     width: 400px
