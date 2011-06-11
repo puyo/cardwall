@@ -9,5 +9,4 @@ javascripts:
 
 stylesheets:
   screen:
-    - public/stylesheets/fancybox/jquery.fancybox-1.3.4.css
     - public/stylesheets/compiled/screen.css
