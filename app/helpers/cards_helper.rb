@@ -1,10 +1,10 @@
 module CardsHelper
   def card_style(card)
-    if card.prototype?
-      nil
-    else
-      "top: #{card.y}px; left: #{card.x}px; z-index: #{card.z}"
-    end
+    format('top: %dpx; left: %dpx; z-index: %d', card.y, card.x, card.z)
+  end
+
+  def card_content_style(card)
+    format('background-color: %s; width: %dpx; min-height: %dpx', card.bg_color, card.w, card.h)
   end
 
   def card_classes(card)

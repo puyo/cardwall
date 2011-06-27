@@ -26,10 +26,25 @@ ActiveRecord::Schema.define(:version => 20110610085117) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.boolean  "shadow",     :default => false, :null => false
-    t.boolean  "prototype",  :default => false, :null => false
   end
 
   add_index "cards", ["wall_id"], :name => "cards_wall_id_fk"
+
+  create_table "prototypes", :force => true do |t|
+    t.string   "name"
+    t.integer  "wall_id",                       :null => false
+    t.integer  "w",                             :null => false
+    t.integer  "h",                             :null => false
+    t.string   "text"
+    t.string   "bg_image"
+    t.string   "bg_color"
+    t.string   "author"
+    t.boolean  "shadow",     :default => false, :null => false
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "prototypes", ["wall_id"], :name => "prototypes_wall_id_fk"
 
   create_table "sessions", :force => true do |t|
     t.string   "session_id", :null => false
@@ -48,5 +63,7 @@ ActiveRecord::Schema.define(:version => 20110610085117) do
   end
 
   add_foreign_key "cards", "walls", :name => "cards_wall_id_fk", :dependent => :delete
+
+  add_foreign_key "prototypes", "walls", :name => "prototypes_wall_id_fk", :dependent => :delete
 
 end

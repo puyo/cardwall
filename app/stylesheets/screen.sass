@@ -5,14 +5,6 @@
 // ------------------------------------------------------------
 // layout
 
-$blueprint_grid_columns: 24
-$blueprint_grid_width: 20px
-$blueprint-grid-margin: 20px
-
-body
-  padding: 0 0.5em
-  width: 2000px
-
 ul, ol
   margin: 0.5em 0
   padding: 0 0 0 40px
@@ -25,6 +17,9 @@ ol
 
 p
   margin: 0.5em 0
+
+header
+  display: none
 
 // ------------------------------------------------------------
 // text
@@ -50,7 +45,6 @@ body
 
 =edit-card-color
   +linear-gradient(color-stops(white, #ddd 33%))
-  +opacity(0.8)
   +box-shadow
   color: #444
   background-color: white
@@ -73,58 +67,29 @@ body
 
 // ------------------------------------------------------------
 
-#wall
+.wall
+  border-width: 1px 0
   position: relative
-  width: 100%
+  width: 2000px
   height: 800px
+  top: 130px
 
-  .card
-    display: block
-    position: absolute
-    &.selected
-      .content
-        outline: 1px dashed #888
-      .edit_card_form
-        display: block
-    .content
-      cursor: pointer
-      float: left
-      .text
-        padding: 5px
-        white-space: pre-wrap
-        font-family: monospace
-        font-size: 13px
-      &.shadow
-        +box-shadow(1px 1px 5px #444)
-    .edit_card_form
-      +edit-card-color
-      +border-radius
-      display: none
-      padding: 5px
-      position: absolute
-      .field
-        display: table-row
-        label, input
-          display: table-cell
-        label
-          padding: 5px 0.5em
-          vertical-align: top
-          text-align: right
-        &.x, &.y, &.z
-          display: none
-        .text_input
-          width: 170px
-      .instructions
-        text-align: right
+// ------------------------------------------------------------
+.dashboard
+  position: fixed
+  z-index: 9999
+  background: #ccc
+  width: 100%
+  height: 120px
+  +box-shadow(1px 0px 10px black)
+  +linear-gradient(color-stops(#aaa, #ccc 100%))
 
-  #multi_edit_card_form
-    position: absolute
-    bottom: 5px
-    right: 5px
-
+// ------------------------------------------------------------
 .save_info
+  float: left
   padding: 5px 0
   height: 25px
+  margin: 0 0.5em
   +clearfix
   .buttons
     float: left
@@ -135,25 +100,94 @@ body
       width: 100%
       &.changed
         +save-button-changed-color
-  .flash
+
+// ------------------------------------------------------------
+.credits
+  float: right
+  margin: 0 0.5em
+
+// ------------------------------------------------------------
+.prototypes
+  +pie-clearfix
+  .prototype
+    position: relative
+    display: block
     float: left
-    width: 400px
-    p
-      margin: 0
-      line-height: 22px
-    .notice, .alert
-      margin: 2px 0
-      text-align: center
-      font-weight: bold
-      +border-radius(5px)
-    .notice
-      +notice-color
-    .alert
-      +alert-color
+    margin: 10px
+    outline: 1px dashed #888
+    .content
+      min-height: 50px !important
+    .name
+      position: absolute
+      right: 0
+      bottom: 0
+      background-color: black
+      color: white
+      padding: 0 0.5em
 
-header
+// ------------------------------------------------------------
+.card
+  display: block
+  position: absolute
+  &.selected
+    .content
+      outline: 1px dashed #888
+    .edit_card_form
+      display: block
+
+.card, .prototype
+  .content
+    cursor: pointer
+    float: left
+    .text
+      padding: 5px
+      white-space: pre-wrap
+      font-family: monospace
+      font-size: 13px
+    &.shadow
+      +box-shadow(1px 1px 5px #444)
+
+// ------------------------------------------------------------
+.edit_card_form
+  +edit-card-color
+  +border-radius
   display: none
+  padding: 5px
+  position: absolute
+  .field
+    display: table-row
+    label, input
+      display: table-cell
+    label
+      padding: 5px 0.5em
+      vertical-align: top
+      text-align: right
+    &.x, &.y, &.z
+      display: none
+    .text_input
+      width: 170px
+  .instructions
+    text-align: right
 
-#wall
-  border: 1px dashed #888
-  border-width: 1px 0
+// ------------------------------------------------------------
+.multi_edit_card_form
+  position: absolute
+  bottom: 5px
+  right: 5px
+
+// ------------------------------------------------------------
+.flash
+  float: left
+  width: 400px
+  p
+    margin: 0
+    line-height: 22px
+  .notice, .alert
+    margin: 2px 0
+    text-align: center
+    font-weight: bold
+    +border-radius(5px)
+  .notice
+    +notice-color
+  .alert
+    +alert-color

@@ -1,19 +1,10 @@
-= div_for(card, style: card_style(card)) do
-  .content{style: card_content_style(card), class: card_classes(card)}
+= div_for(prototype, :title => prototype.name) do
+  .content{style: card_content_style(prototype), class: card_classes(prototype)}
     .text<
       :preserve
-        #{h(card.text)}
-  .edit_card_form{id: dom_id(card, 'edit')}
-    = form.fields_for :cards, card do |f|
-      .field.x
-        = f.label :x
-        = f.text_field :x, class: 'x_input'
-      .field.y
-        = f.label :y
-        = f.text_field :y, class: 'y_input'
-      .field.z
-        = f.label :z
-        = f.text_field :z, class: 'z_input'
+        #{h(prototype.text)}
+  .edit_card_form{id: dom_id(prototype, 'edit')}
+    = form.fields_for :prototypes, prototype do |f|
       .field.w
         = f.label :w
         = f.text_field :w, class: 'w_input'
@@ -32,8 +23,7 @@
       .field.shadow
         = f.label :shadow
         = f.check_box :shadow, class: 'shadow_input'
-      .field.actions
-        = label_tag ''
-        = button_to 'Delete'
     .instructions
       %p esc = close
+  .name
+    = prototype.name
