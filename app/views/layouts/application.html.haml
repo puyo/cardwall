@@ -2,7 +2,8 @@
 %html
   %head
     %title Card Wall
-    = include_stylesheets :screen, media: 'all'
+    = stylesheet_link_tag :application
+    -#= include_stylesheets :screen, media: 'all'
     = csrf_meta_tag
   %body
     %header
@@ -14,5 +15,6 @@
 
     %footer
 
-    = include_javascripts :screen
+    = javascript_include_tag :application
+    -#= include_javascripts :screen
     = yield :javascript

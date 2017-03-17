@@ -1,8 +1,18 @@
-= div_for(prototype, :title => prototype.name) do
+= div_for(prototype, title: prototype.name, class: :editable, data: {create_url: wall_url(wall)}) do
   .content{style: card_content_style(prototype), class: card_classes(prototype)}
     .text<
       :preserve
         #{h(prototype.text)}
+  .new_card_form
+    -# form_for :wall_card, wall.cards.build do |f|
+      = f.hidden_field :x, value: nil, class: 'x_input'
+      = f.hidden_field :y, value: nil, class: 'y_input'
+      = f.hidden_field :w, value: prototype.w
+      = f.hidden_field :h, value: prototype.h
+      = f.hidden_field :text, rows: 5, value: prototype.text
+      = f.hidden_field :author, value: prototype.author
+      = f.hidden_field :bg_color, value: prototype.bg_color
+      = f.check_box :shadow, checked: prototype.shadow
   .edit_card_form{id: dom_id(prototype, 'edit')}
     = form.fields_for :prototypes, prototype do |f|
       .field.w

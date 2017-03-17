@@ -8,3 +8,4 @@ junk
 .DS_Store
 tags
 public/assets
+.sass-cache

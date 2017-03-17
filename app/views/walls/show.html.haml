@@ -1,24 +1,23 @@
 = form_for @wall do |form|
   %section.dashboard
-    .save_info
-      .buttons
-        = form.submit 'Save (Ctrl-S)', disabled: true
-      .flash
+    .save_button
+      = form.submit 'Save (Ctrl-S)', disabled: true
+    .flash
+      .notice
         - if flash.notice
-          .notice
-            %p= notice
+          %p= notice
+      .alert
         - if flash.alert
-          .alert
-            %p= alert
+          %p= alert
 
     .credits
       %p
-        a web app by #{link_to 'gregory mcintyre', 'http://gregorymcintyre.com'} with <tt>&lt;3</tt>
+        #{link_to 'gregory mcintyre', 'http://gregorymcintyre.com'} with <tt>&lt;3</tt>
       %p
         please #{link_to 'report', 'https://github.com/puyo/cardwall/issues/new'} any problems
 
     .prototypes
-      = render partial: 'prototype', collection: @wall.prototypes, as: :prototype, locals: { form: form }
+      = render partial: 'prototype', collection: @wall.prototypes, as: :prototype, locals: { form: form, wall: @wall }
 
   %section.wall#wall
     = render partial: 'card', collection: @wall.cards, as: :card, locals: { form: form }
@@ -26,64 +25,45 @@
 - content_for :javascript do
   :javascript
     $(function(){
-      var cards = $("#wall").find('.card');
       var dragging = false;
 
-      function bringToTop(elem){
+      function bringToTop(elem, others){
         // stolen from jquery.ui.draggable's stack functionality
-        var group = $.makeArray(cards).sort(function(a,b){
+        var group = $.makeArray(others).sort(function(a,b){
           return (parseInt($(a).css("zIndex"),10) || 0) - (parseInt($(b).css("zIndex"),10) || 0);
         });
         if (!group.length) { return; }
         var min = parseInt(group[0].style.zIndex) || 0;
-        $(group).each(function(i){
-          this.style.zIndex = min + i;
-        });
+        $(group).each(function(i){ this.style.zIndex = min + i; });
         elem[0].style.zIndex = min + group.length;
       }
 
-      function setEditPosition(card){
-        card.find('.edit_card_form').css('left', card.find('.content').width() + 5);
+      function setEditPosition(editable){
+        editable.find('.edit_card_form').css('left', editable.find('.content').width() + 5);
       }
 
-      $('.prototype').find('.content').click(function() {
+      $('.editable').click(function() {
         if (dragging === false) {
-          var prototype = $(this).closest('.prototype');
-          var selected = prototype.hasClass('selected');
-          bringToTop(prototype);
-          $('.prototype').removeClass('selected');
+          var editable = $(this).closest('.editable');
+          var selected = editable.hasClass('selected');
+          bringToTop(editable, $('.editable'));
+          $('.editable').removeClass('selected');
           if (!selected) {
-            prototype.addClass('selected');
-            prototype.find('input:visible, textarea:visible').first().focus();
-            setEditPosition(prototype);
+            editable.addClass('selected');
+            editable.find('input:visible, textarea:visible').first().focus();
+            setEditPosition(editable);
           }
         } else {
           dragging = false;
         }
       });
 
-      cards.find('.content').click(function() {
-        if (dragging === false) {
-          var card = $(this).closest('.card');
-          var selected = card.hasClass('selected');
-          bringToTop(card);
-          cards.removeClass('selected');
-          if (!selected) {
-            card.addClass('selected');
-            card.find('input:visible, textarea:visible').first().focus();
-            setEditPosition(card);
-          }
-        } else {
-          dragging = false;
-        }
-      });
-
-      cards.change(function(){
+      $('.editable').change(function(){
         $(this).addClass('changed');
         $('#wall_submit').addClass('changed').attr('disabled', false);
       });
 
-      cards.draggable({
+      $('.card').draggable({
         containment: "#wall",
         disabled: false,
         stack: '.card',
@@ -92,31 +72,31 @@
           var pos = $(this).position();
           $(this).find('.x_input').val(pos.left);
           $(this).find('.y_input').val(pos.top);
-          cards.each(function(){
+          $('.card').each(function(){
             $(this).find('.z_input').val($(this).css('z-index'));
           });
           $(this).trigger('change');
         }
       });
 
-      cards.find('.text_input').bind('keydown keyup keypress', function(){
-        var card = $(this).closest('.card');
-        var text = card.find('.content .text');
+      $('.text_input').bind('keydown keyup keypress', function(){
+        var editable = $(this).closest('.editable');
+        var text = editable.find('.content .text');
         if ($(this).val() !== text.text()) {
           $(this).trigger('change');
         }
-        card.find('.content .text').text($(this).val());
+        editable.find('.content .text').text($(this).val());
       });
 
-      cards.find('.w_input').change(function(){
-        var card = $(this).closest('.card');
-        card.find('.content').css('width', $(this).val());
-        setEditPosition(card);
+      $('.w_input').change(function(){
+        var editable = $(this).closest('.editable');
+        editable.find('.content').css('width', $(this).val());
+        setEditPosition(editable);
       });
-      cards.find('.h_input').change(function(){ $(this).closest('.card').find('.content').css('min-height', $(this).val() + 'px'); });
+      $('.h_input').change(function(){ $(this).closest('editable').find('.content').css('min-height', $(this).val() + 'px'); });
 
-      cards.find('.shadow_input').change(function(){
-        var content = $(this).closest('.card').find('.content');
+      $('.shadow_input').change(function(){
+        var content = $(this).closest('.editable').find('.content');
         if ($(this).attr('checked')) {
           content.addClass('shadow');
         } else {
@@ -124,14 +104,23 @@
         }
       });
 
-      cards.find('.bg_color_input').bind('keydown keyup keypress', function(){
-        $(this).closest('.card').find('.content').css('background-color', $(this).val());
+      $('.bg_color_input').bind('keydown keyup keypress', function(){
+        $(this).closest('.editable').find('.content').css('background-color', $(this).val());
         $(this).trigger('change');
+      });
+
+      $('.prototype').sortable({
+        disabled: false,
+        stop: function(event, ui) {
+          var form = ui.find('form');
+          form.find()
+          //console.log(event, ui);
+        }
       });
 
       $(document).keyup(function(event){
         if (event.keyCode === 27) {
-          $('.card').removeClass('selected');
+          $('.selected').removeClass('selected');
         }
       });
 
@@ -141,5 +130,5 @@
         }
       });
 
-      $('.flash').find('.notice, .alert').delay(5000).fadeOut('slow');
+      $('.flash').find('.notice, .alert').find('p').delay(5000).fadeOut('slow');
     });

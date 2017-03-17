@@ -8,7 +8,7 @@ module CardsHelper
   end
 
   def card_classes(card)
-    card.shadow? ? 'shadow' : nil
+    card.shadow ? 'shadow' : nil
   end
 end
 

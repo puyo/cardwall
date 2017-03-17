@@ -40,5 +40,14 @@ module CardWall
 
     # Configure sensitive parameters which will be filtered from the log file.
     config.filter_parameters += [:password, :pixels]
+
+    config.assets.enabled = true
+    config.assets.precompile.push /(^[^_]|\/[^_])[^\/]*/
+    #config.sass.preferred_syntax = :sass
   end
 end
+
+if defined?(Bundler)
+  Bundler.require *Rails.groups(:assets => %w(development test))
+end
+
